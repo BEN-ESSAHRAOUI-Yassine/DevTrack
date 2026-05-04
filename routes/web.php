@@ -1,20 +1,35 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('projects.index');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    // Projects
+    Route::resource('projects', ProjectController::class);
+
+    Route::get('/projects/{project}/archive', [ProjectController::class, 'archive'])
+        ->name('projects.archive');
+
+    Route::get('/projects/{project}/restore', [ProjectController::class, 'restore'])
+        ->name('projects.restore');
+
+    Route::delete('/projects/{project}/force-delete', [ProjectController::class, 'forceDelete'])
+        ->name('projects.forceDelete');
+
+    Route::post('/projects/{project}/members', [ProjectController::class, 'addMember'])
+        ->name('projects.members.add');
+
+    Route::delete('/projects/{project}/members/{user}', [ProjectController::class, 'removeMember'])
+        ->name('projects.members.remove');
+
+    // Tasks
+    
 });
 
 require __DIR__.'/auth.php';

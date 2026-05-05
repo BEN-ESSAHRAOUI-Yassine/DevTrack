@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
@@ -15,20 +17,20 @@ class Project extends Model
 
     protected $fillable = ['title', 'description', 'deadline'];
 
-    public function users()
+    public function users(): BelongsToMany
     {
-    return $this->belongsToMany(User::class)->withPivot('project_user');
+        return $this->belongsToMany(User::class)->withPivot('role');
     }
 
-    public function tasks()
+    public function tasks(): HasMany
     {
-    return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 
     // Mutator
     public function setTitleAttribute($value)
     {
-    $this->attributes['title'] = ucfirst($value);
+        $this->attributes['title'] = ucfirst($value);
     }
 
 }

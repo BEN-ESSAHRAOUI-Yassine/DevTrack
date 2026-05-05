@@ -33,4 +33,19 @@ class Project extends Model
         $this->attributes['title'] = ucfirst($value);
     }
 
+    public function getStatusAttribute()
+{
+        // if no tasks → consider pending
+        if ($this->tasks->isEmpty()) {
+            return 'pending';
+        }
+
+        // check if all tasks are done
+        $allDone = $this->tasks->every(function ($task) {
+            return $task->status === 'done';
+        });
+
+        return $allDone ? 'done' : 'pending';
+    }
+
 }

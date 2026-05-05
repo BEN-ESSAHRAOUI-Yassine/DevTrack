@@ -5,17 +5,23 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
-    return redirect()->route('projects.index')->name('dashboard');
-});
+    return redirect()->route('projects.index');
+})->name('dashboard');
+
 Route::middleware(['auth'])->group(function () {
 
     // Projects
+    Route::get('/projects/{project}/dashboard', [ProjectController::class, 'Dashboard'])
+        ->name('projects.dashboard');
+    Route::get('/projects/archived', [ProjectController::class, 'archived'])
+        ->name('projects.archived');
+
+    Route::get('/projects/mine', [ProjectController::class, 'mine'])
+        ->name('projects.mine');
+
     Route::resource('projects', ProjectController::class);
 
-    Route::get('/projects/archives', [ProjectController::class, 'archives'])
-        ->name('projects.archives');
-    
-    Route::get('/projects/{project}/archive', [ProjectController::class, 'archive'])
+    Route::get('/projects/{project}/archive', [ProjectController::class, 'destroy'])
         ->name('projects.archive');
 
     Route::get('/projects/{project}/restore', [ProjectController::class, 'restore'])

@@ -8,7 +8,7 @@
 
     <h1 class="text-2xl font-bold">Tasks</h1>
 
-    <a href="{{ route('projects.tasks.create', $project) }}"
+    <a href="{{ route('tasks.create', $project) }}"
        class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
         + Task
     </a>

@@ -8,12 +8,17 @@
 
         <a href="{{ route('projects.index') }}"
            class="block text-gray-700 hover:text-blue-600">
-            Projects
+            Actives Projects
         </a>
 
-        <a href="{{ route('projects.archives') }}"
+        <a href="{{ route('projects.archived') }}"
            class="block text-gray-500 hover:text-blue-600">
             Archived Projects
+        </a>
+
+        <a href="{{ route('projects.mine') }}"
+           class="block text-gray-500 hover:text-blue-600">
+            My Projects
         </a>
 
     </nav>

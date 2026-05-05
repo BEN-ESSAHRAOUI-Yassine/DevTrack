@@ -21,7 +21,7 @@ class TaskFactory extends Factory
     {
         return [
             'project_id' => Project::factory(),
-            'assigned_user_id' => User::factory(),
+            'assigned_to' => User::factory(),
             'title' => $this->faker->sentence(4),
             'description' => $this->faker->paragraph(),
             'status' => $this->faker->randomElement(Task::STATUSES),

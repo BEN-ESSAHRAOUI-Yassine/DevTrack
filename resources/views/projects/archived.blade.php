@@ -1,16 +1,12 @@
 @extends('layouts.app')
 
-@section('page-title', 'Projects')
+@section('page-title', 'Archived Projects')
 
 @section('content')
 
 <div class="flex justify-between mb-6">
-    <h1 class="text-2xl font-bold">Projects</h1>
+    <h1 class="text-2xl font-bold">Archived Projects</h1>
 
-    <a href="{{ route('projects.create') }}"
-       class="bg-blue-600 text-white px-4 py-2 rounded-lg">
-        + New Project
-    </a>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -35,17 +31,26 @@
         <span>{{ $project->tasks->count() }} tasks</span>
     </div>
 
-    <a href="{{ route('projects.show', $project) }}"
-       class="text-blue-600 mt-3 inline-block">
-        View →
-    </a>
+    <form method="POST" action="{{ route('projects.restore', $project->id) }}">
+        @csrf
+        <button class="bg-blue-600 text-white px-3 py-1 rounded text-sm">
+            Restore
+        </button>
+    </form>
+
+    <form method="POST" action="{{ route('projects.forceDelete', $project->id) }}">
+        @csrf @method('DELETE')
+        <button class="bg-red-600 text-white px-3 py-1 rounded text-sm">
+            Delete
+        </button>
+    </form>
 
 </div>
 
 
 @empty
     <div class="col-span-full p-5 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-700">
-        No projects found. Create your first project to get started.
+        No archived projects found.
     </div>
 @endforelse
 </div>

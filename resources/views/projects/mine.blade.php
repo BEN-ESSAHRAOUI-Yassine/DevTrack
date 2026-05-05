@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('page-title', 'Projects')
+@section('page-title', 'My Projects')
 
 @section('content')
 
 <div class="flex justify-between mb-6">
-    <h1 class="text-2xl font-bold">Projects</h1>
+    <h1 class="text-2xl font-bold">My Projects</h1>
 
     <a href="{{ route('projects.create') }}"
        class="bg-blue-600 text-white px-4 py-2 rounded-lg">

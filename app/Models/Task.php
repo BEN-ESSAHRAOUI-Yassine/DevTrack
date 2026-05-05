@@ -18,7 +18,7 @@ class Task extends Model
 
     protected $fillable = [
         'project_id',
-        'assigned_user_id',
+        'assigned_to',
         'title',
         'description',
         'status',
@@ -40,7 +40,7 @@ class Task extends Model
 
     public function assignedUser(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'assigned_user_id');
+        return $this->belongsTo(User::class, 'assigned_to');
     }
 
     public function getStatusLabelAttribute(): string

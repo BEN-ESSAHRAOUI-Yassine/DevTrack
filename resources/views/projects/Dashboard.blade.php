@@ -90,52 +90,74 @@
     </div>
 
     {{-- ACTIONS --}}
-    <div class="mt-4 flex justify-between items-center">
+    {{-- ACTIONS --}}
+<div class="mt-5 flex items-end justify-between">
 
-        {{-- STATUS CHANGE --}}
-        @if(
-            auth()->id() === $task->assigned_to ||
-            auth()->user()->projects->find($project->id)->pivot->role === 'lead'
-        )
+    {{-- STATUS CHANGE --}}
+    <div>
+        @if($task->status_label !== 'Done')
+            @if(
+                auth()->id() === $task->assigned_to ||
+                auth()->user()->projects->find($project->id)->pivot->role === 'lead'
+            )
+
+            <form method="POST"
+                  action="{{ route('projects.tasks.updateStatus', [$project, $task]) }}">
+                @csrf
+                @method('PATCH')
+
+                <select name="status"
+                        onchange="this.form.submit()"
+                        class="text-xs border rounded-lg px-2 py-1 bg-white">
+
+                    <option value="todo" {{ $task->status=='todo'?'selected':'' }}>
+                        Todo
+                    </option>
+
+                    <option value="in_progress"
+                        {{ $task->status=='in_progress'?'selected':'' }}>
+                        In Progress
+                    </option>
+
+                    <option value="done" {{ $task->status=='done'?'selected':'' }}>
+                        Done
+                    </option>
+
+                </select>
+
+            </form>
+
+            @endif
+        @endif
+    </div>
+
+    {{-- RIGHT BOTTOM BUTTONS --}}
+    @can('update', $task)
+    <div class="flex gap-2">
+
+        <a href="{{ route('projects.tasks.edit', [$project, $task]) }}"
+           class="px-3 py-1.5 text-xs rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition">
+            Edit
+        </a>
 
         <form method="POST"
-              action="{{ route('projects.tasks.updateStatus', [$project, $task]) }}">
+              action="{{ route('projects.tasks.destroy', [$project, $task]) }}"
+              onsubmit="return confirm('Delete this task?')">
+
             @csrf
-            @method('PATCH')
+            @method('DELETE')
 
-            <select name="status"
-                    onchange="this.form.submit()"
-                    class="text-xs border rounded px-2 py-1">
-
-                <option value="todo" {{ $task->status=='todo'?'selected':'' }}>Todo</option>
-                <option value="in_progress" {{ $task->status=='in_progress'?'selected':'' }}>In Progress</option>
-                <option value="done" {{ $task->status=='done'?'selected':'' }}>Done</option>
-
-            </select>
+            <button type="submit"
+                    class="px-3 py-1.5 text-xs rounded-lg bg-red-500 text-white hover:bg-red-600 transition">
+                Delete
+            </button>
 
         </form>
 
-        @endif
-
-        {{-- LEAD ACTIONS --}}
-        @can('update', $task)
-        <div class="flex gap-2">
-
-            <a href="{{ route('projects.tasks.edit', [$project, $task]) }}"
-               class="text-blue-600 text-xs">Edit</a>
-
-            <form method="POST"
-                  action="{{ route('projects.tasks.destroy', [$project, $task]) }}">
-                @csrf
-                @method('DELETE')
-
-                <button class="text-red-500 text-xs">Delete</button>
-            </form>
-
-        </div>
-        @endcan
-
     </div>
+    @endcan
+
+</div>
 
 </div>
 

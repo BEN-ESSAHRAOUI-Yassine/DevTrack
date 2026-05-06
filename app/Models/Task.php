@@ -46,10 +46,10 @@ class Task extends Model
     public function getStatusLabelAttribute(): string
     {
         return match ($this->status) {
-            'todo' => 'A faire',
-            'in_progress' => 'En cours',
-            'done' => 'Termine',
-            default => 'Inconnu',
+            'todo' => 'To do',
+            'in_progress' => 'In Progress',
+            'done' => 'Done',
+            default => 'Unknown',
         };
     }
 

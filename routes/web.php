@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/projects/{project}/archive', [ProjectController::class, 'destroy'])
         ->name('projects.archive');
 
-    Route::get('/projects/{project}/restore', [ProjectController::class, 'restore'])
+    Route::post('/projects/{project}/restore', [ProjectController::class, 'restore'])
         ->name('projects.restore');
 
     Route::delete('/projects/{project}/force-delete', [ProjectController::class, 'forceDelete'])

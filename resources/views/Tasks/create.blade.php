@@ -130,21 +130,21 @@
                     Assign To
                 </label>
 
-                <select name="assigned_user_id"
+                <select name="assigned_to"
                         class="w-full border px-3 py-2 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
 
                     <option value="">Unassigned</option>
 
-                    @foreach($users as $user)
+                    @foreach($developers as $user)
                         <option value="{{ $user->id }}"
-                            {{ old('assigned_user_id', $task->assigned_user_id ?? '') == $user->id ? 'selected' : '' }}>
+                            {{ old('assigned_to', $task->assigned_to ?? '') == $user->id ? 'selected' : '' }}>
                             {{ $user->name }}
                         </option>
                     @endforeach
 
                 </select>
 
-                @error('assigned_user_id')
+                @error('assigned_to')
                     <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                 @enderror
             </div>

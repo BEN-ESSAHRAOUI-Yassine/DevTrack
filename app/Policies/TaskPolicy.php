@@ -35,8 +35,8 @@ class TaskPolicy
 
     public function updateStatus(User $user, Task $task): bool
     {
-        return $task->assigned_to === $user->id
-            && $this->isMember($user, $task->project);
+        return $this->isLead($user, $task->project)
+            || $task->assigned_to === $user->id;
     }
 
     private function isMember(User $user, Project $project): bool

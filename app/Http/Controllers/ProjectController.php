@@ -105,7 +105,7 @@ class ProjectController extends Controller
             'users'
         ]);
 
-        return view('projects.dashboard', compact('project'));
+        return view('projects.Dashboard', compact('project'));
     }
 
     /**
@@ -213,13 +213,17 @@ class ProjectController extends Controller
 
         $role = $member->pivot->role;
 
-        // ❌ Only rule: lead cannot remove himself
+        //  Only rule: lead cannot remove himself
         if ($user->id === $authUser->id && $role === 'lead') {
             return back()->with('error', 'You cannot remove yourself as a lead');
         }
 
-        // ✅ Otherwise allow removal
+        //  Otherwise allow removal
+        $project->tasks()
+        ->where('assigned_to', $user->id)
+        ->update(['assigned_to' => null]);
         $project->users()->detach($user->id);
+        
 
         return back()->with('success', 'Member removed');
     }

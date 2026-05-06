@@ -19,7 +19,7 @@ class TaskController extends Controller
             ->latest()
             ->get();
 
-        return view('tasks.index', compact('project', 'tasks'));
+        return view('projects.Dashboard', compact('project', 'tasks'));
     }
 
     public function create(Project $project)
@@ -27,11 +27,11 @@ class TaskController extends Controller
         $this->authorize('create', [Task::class, $project]);
 
         $developers = $project->users()
-            ->wherePivot('role', 'developer')
+            //->wherePivot('role', 'developer')
             ->orderBy('name')
             ->get();
 
-        return view('tasks.create', compact('project', 'developers'));
+        return view('Tasks.create', compact('project', 'developers'));
     }
 
     public function store(StoreTaskRequest $request, Project $project)
@@ -48,24 +48,27 @@ class TaskController extends Controller
         $this->authorize('update', $task);
 
         $developers = $project->users()
-            ->wherePivot('role', 'developer')
+            //->wherePivot('role', 'developer')
             ->orderBy('name')
             ->get();
 
-        return view('tasks.edit', compact('project', 'task', 'developers'));
+        return view('Tasks.edit', compact('project', 'task', 'developers'));
     }
 
     public function update(UpdateTaskRequest $request, Project $project, Task $task)
     {
+        $this->authorize('update', $task);
         $task->update($request->validated());
 
         return redirect()
-            ->route('projects.tasks.index', $project)
+            ->route('projects.dashboard', $project)
             ->with('success', 'Task updated.');
     }
 
     public function updateStatus(UpdateTaskStatusRequest $request, Project $project, Task $task)
     {
+        $this->authorize('updateStatus', $task);
+
         $current = $task->status;
         $next = $request->validated('status');
 
@@ -82,7 +85,7 @@ class TaskController extends Controller
         $task->update(['status' => $next]);
 
         return redirect()
-            ->route('projects.tasks.index', $project)
+            ->route('projects.dashboard', $project)
             ->with('success', 'Task status updated.');
     }
 

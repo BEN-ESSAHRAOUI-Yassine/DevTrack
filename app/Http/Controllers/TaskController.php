@@ -2,63 +2,98 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\UpdateTaskStatusRequest;
+use App\Models\Project;
+use App\Models\Task;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Project $project)
     {
-        //
+        $this->authorize('viewAny', [Task::class, $project]);
+
+        $tasks = $project->tasks()
+            ->with('assignedUser')
+            ->latest()
+            ->get();
+
+        return view('tasks.index', compact('project', 'tasks'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Project $project)
     {
-        //
+        $this->authorize('create', [Task::class, $project]);
+
+        $developers = $project->users()
+            ->wherePivot('role', 'developer')
+            ->orderBy('name')
+            ->get();
+
+        return view('tasks.create', compact('project', 'developers'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request, Project $project)
     {
-        //
+        $project->tasks()->create($request->validated());
+
+        return redirect()
+            ->route('projects.tasks.index', $project)
+            ->with('success', 'Task created.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Project $project, Task $task)
     {
-        //
+        $this->authorize('update', $task);
+
+        $developers = $project->users()
+            ->wherePivot('role', 'developer')
+            ->orderBy('name')
+            ->get();
+
+        return view('tasks.edit', compact('project', 'task', 'developers'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(UpdateTaskRequest $request, Project $project, Task $task)
     {
-        //
+        $task->update($request->validated());
+
+        return redirect()
+            ->route('projects.tasks.index', $project)
+            ->with('success', 'Task updated.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function updateStatus(UpdateTaskStatusRequest $request, Project $project, Task $task)
     {
-        //
+        $current = $task->status;
+        $next = $request->validated('status');
+
+        $allowed = [
+            'todo' => ['in_progress'],
+            'in_progress' => ['done'],
+            'done' => [],
+        ];
+
+        if (!in_array($next, $allowed[$current], true)) {
+            return back()->withErrors(['status' => 'Invalid status transition.']);
+        }
+
+        $task->update(['status' => $next]);
+
+        return redirect()
+            ->route('projects.tasks.index', $project)
+            ->with('success', 'Task status updated.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Project $project, Task $task)
     {
-        //
+        $this->authorize('delete', $task);
+
+        $task->delete();
+
+        return redirect()
+            ->route('projects.tasks.index', $project)
+            ->with('success', 'Task deleted.');
     }
 }

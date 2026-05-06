@@ -6,8 +6,8 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome'); // pour faire passer ExampleTest (200)
-});
+    return redirect()->route('projects.index');
+})->name('dashboard');
 
 Route::get('/dashboard', function () {
     return redirect()->route('projects.index');
@@ -20,12 +20,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Projects
+    Route::get('/projects/{project}/dashboard', [ProjectController::class, 'Dashboard'])
+        ->name('projects.dashboard');
+    Route::get('/projects/archived', [ProjectController::class, 'archived'])
+        ->name('projects.archived');
+
+    Route::get('/projects/mine', [ProjectController::class, 'mine'])
+        ->name('projects.mine');
+
     Route::resource('projects', ProjectController::class);
 
-    Route::get('/projects/{project}/archive', [ProjectController::class, 'archive'])
+    Route::get('/projects/{project}/archive', [ProjectController::class, 'destroy'])
         ->name('projects.archive');
 
-    Route::get('/projects/{project}/restore', [ProjectController::class, 'restore'])
+    Route::post('/projects/{project}/restore', [ProjectController::class, 'restore'])
         ->name('projects.restore');
 
     Route::delete('/projects/{project}/force-delete', [ProjectController::class, 'forceDelete'])

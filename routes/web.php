@@ -20,7 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Projects
-    Route::get('/projects/{project}/dashboard', [ProjectController::class, 'Dashboard'])
+    Route::get('/projects/{project}/dashboard', [TaskController::class, 'index'])
         ->name('projects.dashboard');
     Route::get('/projects/archived', [ProjectController::class, 'archived'])
         ->name('projects.archived');

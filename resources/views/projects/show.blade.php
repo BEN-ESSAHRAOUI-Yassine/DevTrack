@@ -43,6 +43,7 @@
     </div>
 
     {{-- ADD MEMBER --}}
+    @can('manageMembers', $project)
     <form method="POST"
           action="{{ route('projects.members.add', $project) }}"
           class="mt-6 flex gap-2">
@@ -59,7 +60,7 @@
         </button>
 
     </form>
-
+    @endcan
 </div>
 <br><br>
 <div class="flex justify-between items-start">

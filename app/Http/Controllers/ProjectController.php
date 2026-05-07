@@ -48,6 +48,7 @@ class ProjectController extends Controller
     {
         $projects = auth()->user()
             ->projects()
+            ->wherePivot('role', 'lead')
             ->onlyTrashed()
             ->withCount('tasks')
             ->get();

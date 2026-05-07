@@ -91,13 +91,10 @@
     <div class="text-5xl mb-3">📁</div>
 
     <p class="text-gray-500 mb-3">
-        No projects yet
+        No projects yet, Create your first project
     </p>
 
-    <a href="{{ route('projects.create') }}"
-       class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
-        Create your first project
-    </a>
+    
 
 </div>
 

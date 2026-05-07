@@ -154,12 +154,14 @@ GET /api/projects/{project}/tasks
 ```
 
 The endpoint returns:
- - Project tasks
- - JSON formatted response
- - TaskResource formatting
- - Accessor-transformed status labels
+
+- Project tasks
+- JSON formatted response
+- TaskResource formatting
+- Accessor-transformed status labels
 
 # 🎁 Bonus Features
+
 - Soft Deletes for archived projects
 - Project restoration
 - Permanent deletion with forceDelete()
@@ -174,7 +176,9 @@ The endpoint returns:
 - N+1 optimization using with()
 
 # 🛠 Installation
+
 ## Prerequisites
+
 - PHP 8.2+
 - Composer
 - Node.js + NPM
@@ -183,24 +187,32 @@ The endpoint returns:
 - XAMPP / Laragon / WAMP
 
 ## Installation Steps
+
 1. Clone repository
+
 ```bash
 git clone https://github.com/BEN-ESSAHRAOUI-Yassine/DevTrack.git
 cd DevTrack
 ```
+
 2. Install dependencies
+
 ```bash
 composer install
 npm install
 ```
+
 3. Environment configuration
+
 ```bash
 cp .env.example .env
 php artisan key:generate
 ```
+
 4. Configure database
 
 Edit .env
+
 ```bash
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -209,24 +221,33 @@ DB_DATABASE=devtrack
 DB_USERNAME=root
 DB_PASSWORD=
 ```
+
 5. Run migrations and seeders
+
 ```bash
 php artisan migrate:fresh --seed
 ```
+
 6. Compile frontend assets
+
 ```bash
 npm run build
 ```
+
 7. Start server
+
 ```bash
 php artisan serve
 ```
+
 Visit:
+
 ```bash
 http://127.0.0.1:8000
 ```
 
 # 🛠 Technologies Used
+
 - Laravel 13
 - PHP 8+
 - MySQL
@@ -238,188 +259,221 @@ http://127.0.0.1:8000
 - Laravel Policies
 - Laravel Form Requests
 - Laravel API Resources
+
+---
+
 # 📁 Directory Structure
+
 app/
- ├── Http/
- │   ├── Controllers/
- │   │   ├── ProjectController.php
- │   │   ├── TaskController.php
- │   │   └── ProfileController.php
- │   │
- │   ├── Requests/
- │   │   ├── StoreProjectRequest.php
- │   │   ├── UpdateProjectRequest.php
- │   │   ├── StoreTaskRequest.php
- │   │   ├── UpdateTaskRequest.php
- │   │   └── UpdateTaskStatusRequest.php
- │   │
- │   └── Resources/
- │       └── TaskResource.php
- │
- ├── Models/
- │   ├── User.php
- │   ├── Project.php
- │   └── Task.php
- │
- ├── Policies/
- │   ├── ProjectPolicy.php
- │   └── TaskPolicy.php
+├── Http/
+│ ├── Controllers/
+│ │ ├── ProjectController.php
+│ │ ├── TaskController.php
+│ │ └── ProfileController.php
+│ │
+│ ├── Requests/
+│ │ ├── StoreProjectRequest.php
+│ │ ├── UpdateProjectRequest.php
+│ │ ├── StoreTaskRequest.php
+│ │ ├── UpdateTaskRequest.php
+│ │ └── UpdateTaskStatusRequest.php
+│ │
+│ └── Resources/
+│ └── TaskResource.php
+│
+├── Models/
+│ ├── User.php
+│ ├── Project.php
+│ └── Task.php
+│
+├── Policies/
+│ ├── ProjectPolicy.php
+│ └── TaskPolicy.php
 
 database/
- ├── migrations/
- ├── factories/
- └── seeders/
+├── migrations/
+├── factories/
+└── seeders/
 
 resources/views/
- ├── layouts/
- ├── auth/
- ├── projects/
- ├── tasks/
- └── components/
+├── layouts/
+├── auth/
+├── projects/
+├── tasks/
+└── components/
 
 routes/
- ├── web.php
- └── api.php
+├── web.php
+└── api.php
 
 # 🔒 Security Measures
 
 The application implements several Laravel security best practices:
 
-Authentication middleware
-Password hashing
-CSRF protection
-Form Request validation
-Policy-based authorization
-Route model binding
-Scoped bindings
-Protected routes
-Authorization checks using @can
-🛣 Routing System
-Method	Route	Controller
-GET	/projects	ProjectController@index
-GET	/projects/create	ProjectController@create
-POST	/projects	ProjectController@store
-GET	/projects/{project}	ProjectController@show
-GET	/projects/{project}/edit	ProjectController@edit
-PUT	/projects/{project}	ProjectController@update
-DELETE	/projects/{project}	ProjectController@destroy
-POST	/projects/{project}/restore	ProjectController@restore
-DELETE	/projects/{project}/force-delete	ProjectController@forceDelete
-GET	/projects/{project}/dashboard	TaskController@index
-POST	/projects/{project}/members	ProjectController@addMember
-DELETE	/projects/{project}/members/{user}	ProjectController@removeMember
-POST	/projects/{project}/tasks	TaskController@store
-PUT	/projects/{project}/tasks/{task}	TaskController@update
-PATCH	/projects/{project}/tasks/{task}/status	TaskController@updateStatus
-DELETE	/projects/{project}/tasks/{task}	TaskController@destroy
-🗄 Database Design
-Tables
-users
-projects
-project_user
-tasks
-Relationships
-User ↔ Projects
+- Authentication middleware
+- Password hashing
+- CSRF protection
+- Form Request validation
+- Policy-based authorization
+- Route model binding
+- Scoped bindings
+- Protected routes
+- Authorization checks using @can
 
-Many-to-many relationship using:
+# 🛣 Routing System
 
-project_user
+| Method | Route                                   | Controller                     |
+| ------ | --------------------------------------- | ------------------------------ |
+| GET    | /projects                               | ProjectController@index        |
+| GET    | /projects/create                        | ProjectController@create       |
+| POST   | /projects                               | ProjectController@store        |
+| GET    | /projects/{project}                     | ProjectController@show         |
+| GET    | /projects/{project}/edit                | ProjectController@edit         |
+| PUT    | /projects/{project}                     | ProjectController@update       |
+| DELETE | /projects/{project}                     | ProjectController@destroy      |
+| POST   | /projects/{project}/restore             | ProjectController@restore      |
+| DELETE | /projects/{project}/force-delete        | ProjectController@forceDelete  |
+| GET    | /projects/{project}/dashboard           | TaskController@index           |
+| POST   | /projects/{project}/members             | ProjectController@addMember    |
+| DELETE | /projects/{project}/members/{user}      | ProjectController@removeMember |
+| POST   | /projects/{project}/tasks               | TaskController@store           |
+| PUT    | /projects/{project}/tasks/{task}        | TaskController@update          |
+| PATCH  | /projects/{project}/tasks/{task}/status | TaskController@updateStatus    |
+| DELETE | /projects/{project}/tasks/{task}        | TaskController@destroy         |
 
-With pivot column:
+---
 
-role
-Project → Tasks
+# 🗄 Database Design
 
-One project has many tasks.
+## Tables
 
-Task → User
+- users
+- projects
+- project_user
+- tasks
 
-One task belongs to one assigned developer.
+## Relationships
 
-📌 Laravel Concepts Used
-Policies
+User ↔ Projects : Many-to-many relationship using: project_user With pivot column: role
+Project → Tasks : One project has many tasks.
+Task → User : One task belongs to one assigned developer.
+
+## MCD
+
+![MCD Screenshot](public/images/DevTrack_MCD.png)
+
+## MLD
+
+![MLD Screenshot](public/images/DevTrack_MLD.png)
+
+## DB Diagram
+
+![DB Diagram Screenshot](public/images/DevTrack_db_diagram.png)
+
+# 📌 Laravel Concepts Used
+
+- **Policies**
 
 Used for:
 
-Project ownership authorization
-Role-based permissions
-Task access protection
-Form Requests
+- Project ownership authorization
+- Role-based permissions
+- Task access protection
+
+- **Form Requests**
 
 Used for:
 
-Project validation
-Task validation
-Status update validation
-Soft Deletes
+- Project validation
+- Task validation
+- Status update validation
+
+- **Soft Deletes**
 
 Projects are archived instead of permanently deleted.
 
-Accessors
-status_label
+- **Accessors**
+
+- status_label
 
 Transforms:
 
+```text
 in_progress
+```
 
 Into:
 
+```text
 In Progress
-deadline_status
+```
+
+- deadline_status
 
 Determines if task is:
 
-Normal
-Urgent
-Local Scope
+- Normal
+- Urgent
+
+* **Local Scope**
+
+```text
 urgent()
+```
 
 Filters tasks with:
 
-Deadline within 48 hours
-Status not done
-🐞 Debugging Tools
-Laravel Debugbar
+- Deadline within 48 hours
+- Status not done
+
+# 🐞 Debugging Tools
+
+- **Laravel Debugbar**
 
 Used to:
 
-Detect N+1 queries
-Monitor SQL queries
-Analyze performance
-Laravel Telescope
+- Detect N+1 queries
+- Monitor SQL queries
+- Analyze performance
+
+- **Laravel Telescope**
 
 Access:
 
+```text
 /telescope
+```
 
 Used to:
 
-Inspect requests
-View exceptions
-Monitor queries
-Debug authorization
-Analyze payloads
-📸 Screenshots
-Login Page
-resources/assets/screenshots/login.png
-Dashboard
-resources/assets/screenshots/dashboard.png
-Project Details
-resources/assets/screenshots/project-details.png
-Tasks Dashboard
-resources/assets/screenshots/tasks-dashboard.png
-📋 Jira Board
+- Inspect requests
+- View exceptions
+- Monitor queries
+- Debug authorization
+- Analyze payloads
 
-Add your Jira board link here:
+# 📸 Screenshots
 
-https://your-jira-link.com
+## Login Page
 
-📋 Jira Board
+![DB Diagram Screenshot](public/images/Login.png)
 
-Add your Jira board link here:
+## Dashboard
 
-https://your-jira-link.com
+![DB Diagram Screenshot](public/images/dashboard.png)
 
-👨‍💻 Team Members
-Member 1
-Member 2
+## Project Details
+
+![DB Diagram Screenshot](public/images/projectdetail.png)
+
+## Tasks Dashboard
+
+![DB Diagram Screenshot](public/images/tasksdashboard.png)
+
+## Jira board
+
+![DB Diagram Screenshot](public/images/jiraboard.png)
+
+# 📋 [Jira Board](https://ybenessahraoui.atlassian.net/jira/software/projects/DL/boards/134?atlOrigin=eyJpIjoiNTg1YzhhZDZlZDA3NDdhOWJkMDllMDAxNzYyOGE5MmUiLCJwIjoiaiJ9)
+
+# 📋 [Presentation Link](https://docs.google.com/presentation/d/1Uf9lj9LeJ4yYyABP1gjNnt4vbx7z-2XxtvhyY9NFSxo/edit?usp=sharing)

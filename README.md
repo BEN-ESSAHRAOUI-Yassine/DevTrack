@@ -1,58 +1,425 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# DevTrack — Team Project Management Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+DevTrack is a collaborative internal project management platform built with **Laravel**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+It helps startup teams organize projects, assign tasks, manage developers, and track project progress in real time.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The application was designed for a startup environment where Team Leads need a simple solution to manage developers without relying on scattered tools like WhatsApp, Excel, or handwritten notes.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The platform follows Laravel best practices using:
 
-## Learning Laravel
+- MVC Architecture
+- Eloquent ORM
+- Blade templating
+- Named routes
+- Middleware authentication
+- Policy-based authorization
+- Form Requests validation
+- API Resources
+- Soft Deletes
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+---
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# 🚀 Features
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+# 🔐 Authentication
 
-## Agentic Development
+Users can:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- Register securely
+- Login securely
+- Logout securely
 
-```bash
-composer require laravel/boost --dev
+Authentication is powered by Laravel Breeze.
 
-php artisan boost:install
+---
+
+# 📁 Project Management
+
+Team Leads can:
+
+- Create projects
+- Edit projects
+- Archive projects
+- Restore archived projects
+- Permanently delete archived projects
+- Add members to projects
+- Remove members from projects
+
+Each project includes:
+
+- Title
+- Description
+- Deadline
+- Members
+- Tasks
+- Progress tracking
+
+---
+
+# 👥 Roles System
+
+The application uses a many-to-many relationship between users and projects with a pivot role:
+
+- Lead
+- Developer
+
+## Permissions
+
+### Lead
+
+Can:
+
+- Manage projects
+- Manage members
+- Create tasks
+- Edit tasks
+- Delete tasks
+- Change all task statuses
+
+### Developer
+
+Can:
+
+- View project tasks
+- Update only assigned task status
+
+Authorization is handled using:
+
+- ProjectPolicy
+- TaskPolicy
+
+---
+
+# 📋 Task Management
+
+Project members can:
+
+- View all project tasks
+- Track project progress
+- See assigned developers
+- Monitor task urgency
+
+Leads can additionally:
+
+- Create tasks
+- Edit tasks
+- Delete tasks
+- Assign developers
+
+Developers can:
+
+- Change status of their assigned tasks
+
+---
+
+## Task Fields
+
+- Title
+- Description
+- Status
+    - Todo
+    - In Progress
+    - Done
+- Priority
+    - Low
+    - Medium
+    - High
+- Deadline
+- Assigned developer
+
+---
+
+# 📊 Analytics Dashboard
+
+Each project contains analytics such as:
+
+- Total tasks
+- Completed tasks
+- Tasks per member
+- Task status distribution
+- Completion percentage
+- Urgent tasks indicator
+
+---
+
+# 🔌 API
+
+The application exposes an API endpoint:
+
+```text
+GET /api/projects/{project}/tasks
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+The endpoint returns:
+ - Project tasks
+ - JSON formatted response
+ - TaskResource formatting
+ - Accessor-transformed status labels
 
-## Contributing
+# 🎁 Bonus Features
+- Soft Deletes for archived projects
+- Project restoration
+- Permanent deletion with forceDelete()
+- Accessors:
+    - status_label
+    - deadline_status
+- Local Scope:
+    - urgent()
+- Analytics dashboard
+- Role-based UI rendering using @can
+- Scoped route bindings
+- N+1 optimization using with()
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# 🛠 Installation
+## Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js + NPM
+- MySQL
+- Laravel CLI (optional)
+- XAMPP / Laragon / WAMP
 
-## Code of Conduct
+## Installation Steps
+1. Clone repository
+```bash
+git clone https://github.com/BEN-ESSAHRAOUI-Yassine/DevTrack.git
+cd DevTrack
+```
+2. Install dependencies
+```bash
+composer install
+npm install
+```
+3. Environment configuration
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+4. Configure database
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Edit .env
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=devtrack
+DB_USERNAME=root
+DB_PASSWORD=
+```
+5. Run migrations and seeders
+```bash
+php artisan migrate:fresh --seed
+```
+6. Compile frontend assets
+```bash
+npm run build
+```
+7. Start server
+```bash
+php artisan serve
+```
+Visit:
+```bash
+http://127.0.0.1:8000
+```
 
-## Security Vulnerabilities
+# 🛠 Technologies Used
+- Laravel 13
+- PHP 8+
+- MySQL
+- Blade
+- Eloquent ORM
+- Laravel Breeze
+- Tailwind CSS
+- Vite
+- Laravel Policies
+- Laravel Form Requests
+- Laravel API Resources
+# 📁 Directory Structure
+app/
+ ├── Http/
+ │   ├── Controllers/
+ │   │   ├── ProjectController.php
+ │   │   ├── TaskController.php
+ │   │   └── ProfileController.php
+ │   │
+ │   ├── Requests/
+ │   │   ├── StoreProjectRequest.php
+ │   │   ├── UpdateProjectRequest.php
+ │   │   ├── StoreTaskRequest.php
+ │   │   ├── UpdateTaskRequest.php
+ │   │   └── UpdateTaskStatusRequest.php
+ │   │
+ │   └── Resources/
+ │       └── TaskResource.php
+ │
+ ├── Models/
+ │   ├── User.php
+ │   ├── Project.php
+ │   └── Task.php
+ │
+ ├── Policies/
+ │   ├── ProjectPolicy.php
+ │   └── TaskPolicy.php
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+database/
+ ├── migrations/
+ ├── factories/
+ └── seeders/
 
-## License
+resources/views/
+ ├── layouts/
+ ├── auth/
+ ├── projects/
+ ├── tasks/
+ └── components/
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+routes/
+ ├── web.php
+ └── api.php
+
+# 🔒 Security Measures
+
+The application implements several Laravel security best practices:
+
+Authentication middleware
+Password hashing
+CSRF protection
+Form Request validation
+Policy-based authorization
+Route model binding
+Scoped bindings
+Protected routes
+Authorization checks using @can
+🛣 Routing System
+Method	Route	Controller
+GET	/projects	ProjectController@index
+GET	/projects/create	ProjectController@create
+POST	/projects	ProjectController@store
+GET	/projects/{project}	ProjectController@show
+GET	/projects/{project}/edit	ProjectController@edit
+PUT	/projects/{project}	ProjectController@update
+DELETE	/projects/{project}	ProjectController@destroy
+POST	/projects/{project}/restore	ProjectController@restore
+DELETE	/projects/{project}/force-delete	ProjectController@forceDelete
+GET	/projects/{project}/dashboard	TaskController@index
+POST	/projects/{project}/members	ProjectController@addMember
+DELETE	/projects/{project}/members/{user}	ProjectController@removeMember
+POST	/projects/{project}/tasks	TaskController@store
+PUT	/projects/{project}/tasks/{task}	TaskController@update
+PATCH	/projects/{project}/tasks/{task}/status	TaskController@updateStatus
+DELETE	/projects/{project}/tasks/{task}	TaskController@destroy
+🗄 Database Design
+Tables
+users
+projects
+project_user
+tasks
+Relationships
+User ↔ Projects
+
+Many-to-many relationship using:
+
+project_user
+
+With pivot column:
+
+role
+Project → Tasks
+
+One project has many tasks.
+
+Task → User
+
+One task belongs to one assigned developer.
+
+📌 Laravel Concepts Used
+Policies
+
+Used for:
+
+Project ownership authorization
+Role-based permissions
+Task access protection
+Form Requests
+
+Used for:
+
+Project validation
+Task validation
+Status update validation
+Soft Deletes
+
+Projects are archived instead of permanently deleted.
+
+Accessors
+status_label
+
+Transforms:
+
+in_progress
+
+Into:
+
+In Progress
+deadline_status
+
+Determines if task is:
+
+Normal
+Urgent
+Local Scope
+urgent()
+
+Filters tasks with:
+
+Deadline within 48 hours
+Status not done
+🐞 Debugging Tools
+Laravel Debugbar
+
+Used to:
+
+Detect N+1 queries
+Monitor SQL queries
+Analyze performance
+Laravel Telescope
+
+Access:
+
+/telescope
+
+Used to:
+
+Inspect requests
+View exceptions
+Monitor queries
+Debug authorization
+Analyze payloads
+📸 Screenshots
+Login Page
+resources/assets/screenshots/login.png
+Dashboard
+resources/assets/screenshots/dashboard.png
+Project Details
+resources/assets/screenshots/project-details.png
+Tasks Dashboard
+resources/assets/screenshots/tasks-dashboard.png
+📋 Jira Board
+
+Add your Jira board link here:
+
+https://your-jira-link.com
+
+📋 Jira Board
+
+Add your Jira board link here:
+
+https://your-jira-link.com
+
+👨‍💻 Team Members
+Member 1
+Member 2

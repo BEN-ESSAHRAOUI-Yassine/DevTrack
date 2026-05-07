@@ -22,7 +22,7 @@
 
         <a href="{{ route('projects.dashboard', $project) }}"
            class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
-            Dashboard
+            Tasks
         </a>
 
         @can('update', $project)
@@ -147,13 +147,120 @@
     </div>
 
     {{-- RIGHT SIDE (FUTURE: TASKS / ACTIVITY / STATS) --}}
-    <div class="lg:col-span-2 bg-white p-5 rounded-2xl border shadow-sm flex items-center justify-center text-gray-400">
+    {{-- <div class="lg:col-span-2 bg-white p-5 rounded-2xl border shadow-sm flex items-center justify-center text-gray-400"> --}}
 
-        <p class="text-sm">
-            Project activity, tasks, or analytics can go here
-        </p>
+        {{-- ANALYTICS SECTION --}}
+        <div class="lg:col-span-2 bg-white p-5 rounded-2xl border shadow-sm">
 
-    </div>
+            <div class="flex justify-between items-center mb-5">
+
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">
+                        Team Analytics
+                    </h2>
+
+                    <p class="text-sm text-gray-500">
+                        Tasks distribution and member progress
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="space-y-5">
+
+                @foreach($project->users as $user)
+
+                @php
+                    $userTasks = $project->tasks->where('assigned_to', $user->id);
+
+                    $todo = $userTasks->where('status', 'todo')->count();
+                    $progress = $userTasks->where('status', 'in_progress')->count();
+                    $done = $userTasks->where('status', 'done')->count();
+
+                    $total = $userTasks->count();
+
+                    $completionRate = $total > 0
+                        ? round(($done / $total) * 100)
+                        : 0;
+                @endphp
+
+                <div class="border rounded-xl p-4">
+
+                    {{-- HEADER --}}
+                    <div class="flex justify-between items-center mb-3">
+
+                        <div>
+                            <h3 class="font-semibold text-gray-800">
+                                {{ $user->name }}
+                            </h3>
+
+                            <p class="text-xs text-gray-500">
+                                {{ ucfirst($user->pivot->role) }}
+                            </p>
+                        </div>
+
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-blue-600">
+                                {{ $completionRate }}%
+                            </p>
+
+                            <p class="text-xs text-gray-400">
+                                completion
+                            </p>
+                        </div>
+
+                    </div>
+
+                    {{-- STATUS STATS --}}
+                    <div class="grid grid-cols-3 gap-3 text-center mb-3">
+
+                        <div class="bg-gray-50 rounded-lg py-3">
+                            <p class="text-xs text-gray-500">Todo</p>
+                            <p class="font-bold text-gray-700">
+                                {{ $todo }}
+                            </p>
+                        </div>
+
+                        <div class="bg-yellow-50 rounded-lg py-3">
+                            <p class="text-xs text-yellow-600">
+                                In Progress
+                            </p>
+
+                            <p class="font-bold text-yellow-700">
+                                {{ $progress }}
+                            </p>
+                        </div>
+
+                        <div class="bg-green-50 rounded-lg py-3">
+                            <p class="text-xs text-green-600">
+                                Done
+                            </p>
+
+                            <p class="font-bold text-green-700">
+                                {{ $done }}
+                            </p>
+                        </div>
+
+                    </div>
+
+                    {{-- PROGRESS BAR --}}
+                    <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+
+                        <div class="bg-blue-600 h-full rounded-full"
+                            style="width: {{ $completionRate }}%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @endforeach
+
+            </div>
+
+        </div>
+
+    {{-- </div> --}}
 
 </div>
 

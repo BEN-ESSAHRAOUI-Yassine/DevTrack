@@ -14,14 +14,19 @@
         </h1>
         <p class="text-sm text-gray-500">Manage tasks for this project</p>
     </div>
-
+    <div>
+    <a href="{{ route('projects.show', $project) }}"
+            class="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-gray-700">
+            Back
+        </a>
+    <br><br>
     @can('create', [App\Models\Task::class, $project])
     <a href="{{ route('projects.tasks.create', $project) }}"
        class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700">
         + New Task
     </a>
     @endcan
-
+    </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

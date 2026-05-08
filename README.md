@@ -372,7 +372,7 @@ Task → User : One task belongs to one assigned developer.
 
 # 📌 Laravel Concepts Used
 
-- **Policies**
+- [ ] **Policies**
 
 Used for:
 
@@ -380,7 +380,7 @@ Used for:
 - Role-based permissions
 - Task access protection
 
-- **Form Requests**
+- [ ] **Form Requests**
 
 Used for:
 
@@ -388,11 +388,11 @@ Used for:
 - Task validation
 - Status update validation
 
-- **Soft Deletes**
+- [ ] **Soft Deletes**
 
 Projects are archived instead of permanently deleted.
 
-- **Accessors**
+- [ ] **Accessors**
 
 - status_label
 
@@ -415,7 +415,7 @@ Determines if task is:
 - Normal
 - Urgent
 
-* **Local Scope**
+* [ ] **Local Scope**
 
 ```text
 urgent()

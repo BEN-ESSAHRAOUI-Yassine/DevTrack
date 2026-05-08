@@ -263,7 +263,7 @@ http://127.0.0.1:8000
 ---
 
 # 📁 Directory Structure
-
+```text
 app/
 ├── Http/
 │ ├── Controllers/
@@ -305,7 +305,7 @@ resources/views/
 routes/
 ├── web.php
 └── api.php
-
+```
 # 🔒 Security Measures
 
 The application implements several Laravel security best practices:
@@ -428,7 +428,7 @@ Filters tasks with:
 
 # 🐞 Debugging Tools
 
-- **Laravel Debugbar**
+- [ ] **Laravel Debugbar**
 
 Used to:
 
@@ -436,7 +436,7 @@ Used to:
 - Monitor SQL queries
 - Analyze performance
 
-- **Laravel Telescope**
+- [ ] **Laravel Telescope**
 
 Access:
 
